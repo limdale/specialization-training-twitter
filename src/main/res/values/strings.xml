@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ActTwitterActivity</string>
+    <string name="button_send_tweet_text">Tweet</string>
+    <string name="button_load_home_text">Load Timeline</string>
+    <string name="edittext_new_tweet_hint">Post a tweet...</string>
+</resources>
