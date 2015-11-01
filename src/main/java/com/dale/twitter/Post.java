@@ -69,7 +69,7 @@ public class Post
 
 			JSONObject userObject = currentPost.optJSONObject("user");
 			username = userObject.optString("name");
-			userHandle = userObject.optString("screen_name");
+			userHandle = "@" + userObject.optString("screen_name");
 
 			postList.add(new Post(username, userHandle, body, datePosted));
 		}

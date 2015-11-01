@@ -6,6 +6,8 @@ import android.widget.*;
 import android.view.View;
 import org.json.*;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ActTwitterActivity extends Activity
 {
@@ -16,6 +18,9 @@ public class ActTwitterActivity extends Activity
 	PostAdapter mPostAdapter;
 	AsyncTask<String, Void, String> tweetAsyncTask;
 	AsyncTask<Void, Void, String> homeAsyncTask;
+
+    public static SimpleDateFormat apiFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy");
+    public static SimpleDateFormat postFormat = new SimpleDateFormat("MMM dd");
 
     /** Called when the activity is first created. */
     @Override
@@ -109,6 +114,17 @@ public class ActTwitterActivity extends Activity
                 }
 			}
     	};
+    }
+
+    public static String parseDate(String dateString) {
+        try {
+            Date date = apiFormat.parse(dateString);
+            return postFormat.format(date);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return dateString;
+        }
     }
 
 }

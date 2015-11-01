@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="#FAFAFA">
 
     <RelativeLayout
     	android:id="@+id/container_new_tweet"
@@ -11,10 +12,13 @@
 
     	<EditText
     		android:id="@+id/edittext_new_tweet"
-    		android:layout_width="match_parent"
+    		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
     		android:layout_toLeftOf="@+id/button_send_tweet"
-    		android:hint="@string/edittext_new_tweet_hint" />
+    		android:hint="@string/edittext_new_tweet_hint"
+            android:maxLength="140"
+            android:maxLines="5" />
 
     	<Button
     		android:id="@+id/button_send_tweet"
@@ -22,22 +26,31 @@
     		android:layout_height="wrap_content"
     		android:layout_alignParentRight="true"
     		android:layout_centerVertical="true"
-    		android:text="@string/button_send_tweet_text" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/button_twitter_selector"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/button_send_tweet_text"
+            android:textColor="@color/font_color_white" />
     </RelativeLayout>
 
     <ListView
     	android:id="@+id/listview_home_timeline"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_weight="1" />
+    	android:layout_weight="1" 
+        android:cacheColorHint="#00000000" />
 
     <Button
     	android:id="@+id/button_load_home"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:text="@string/button_load_home_text" />
-
-
-
+        android:background="@drawable/button_twitter_selector"
+        android:padding="20dp"
+    	android:text="@string/button_load_home_text"
+        android:textColor="@color/font_color_white" />
 </LinearLayout>
 
