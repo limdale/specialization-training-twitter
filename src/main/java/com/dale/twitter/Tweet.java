@@ -17,7 +17,7 @@ public class Tweet
 		String urlString = UPDATE_URL;
 		URL url = new URL(urlString);
 		HttpURLConnection uc = (HttpURLConnection)url.openConnection();
-		String authorizationString = generateAuthorizationString(urlString, text,
+		String authorizationString = generateAuthorizationString(urlString, text, "POST",
 			CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
 		uc.setDoOutput(true);
 		uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -37,16 +37,14 @@ public class Tweet
 	}
 
 	public static String getHomeTimeline() throws Exception{
-		String urlString = UPDATE_URL;
+		String urlString = HOME_URL;
 		URL url = new URL(urlString);
 		HttpURLConnection uc = (HttpURLConnection)url.openConnection();
-		//String authorizationString = generateAuthorizationString(urlString, text,
-		//	CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
-		uc.setDoOutput(true);
+		String authorizationString = generateAuthorizationString(urlString, "", "GET",
+			CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
 		uc.setRequestProperty("Content-Type", "application/json");
-		//uc.setRequestProperty("Authorization", authorizationString);
-		OutputStream out = uc.getOutputStream();
-		out.write(("").getBytes());
+		uc.setRequestProperty("Authorization", authorizationString);
+
 		InputStream is = uc.getInputStream();
 		String v = null;
 
@@ -56,10 +54,14 @@ public class Tweet
 			stringBuffer.append(v);
 		}
 
+		// System.out.println(stringBuffer.toString());
+		// System.out.println(",,,");
+		// System.out.println(stringBuffer.toString().substring(51000, stringBuffer.toString().length()));
+
 		return stringBuffer.toString();
 	}
 
-	public static String generateAuthorizationString(String url, String status, 
+	public static String generateAuthorizationString(String url, String status, String method,
 		String oauth_consumer_key, String oauth_consumer_secret, String oauth_token,
 		String oauth_token_secret) throws Exception{
 		StringBuffer sb = new StringBuffer();
@@ -71,9 +73,13 @@ public class Tweet
 			"&oauth_signature_method=" + oauth_signature_method +
 			"&oauth_timestamp=" + oauth_timestamp +
 			"&oauth_token=" + oauth_token +
-			"&oauth_version=" + oauth_version +
-			"&status=" + URLEncoder.encode(status).replace("+", "%20");
-		String signature_base_string = "POST&" + URLEncoder.encode(url, "UTF-8") + "&" + 
+			"&oauth_version=" + oauth_version;
+
+		if(status!=null && !status.equals("")) {
+			parameter_string = parameter_string + "&status=" + URLEncoder.encode(status).replace("+", "%20");
+		}
+		
+		String signature_base_string = method + "&" + URLEncoder.encode(url, "UTF-8") + "&" + 
 			URLEncoder.encode(parameter_string);
 		String signature_key = URLEncoder.encode(oauth_consumer_secret, "UTF-8") + "&" + 
 			URLEncoder.encode(oauth_token_secret);

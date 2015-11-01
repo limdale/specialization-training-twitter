@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.*;
 import android.widget.*;
 import android.view.View;
+import org.json.*;
+import java.util.ArrayList;
 
 public class ActTwitterActivity extends Activity
 {
@@ -11,6 +13,7 @@ public class ActTwitterActivity extends Activity
 	Button mButtonLoadHome;
 	EditText mEditTextTweet;
 	ListView mListViewHomeTimeline;
+	PostAdapter mPostAdapter;
 	AsyncTask<String, Void, String> tweetAsyncTask;
 	AsyncTask<Void, Void, String> homeAsyncTask;
 
@@ -22,6 +25,8 @@ public class ActTwitterActivity extends Activity
         setContentView(R.layout.main);
         initializeViews();
         initializeListeners();
+        mPostAdapter = new PostAdapter(this);
+        mListViewHomeTimeline.setAdapter(mPostAdapter);
         //System.out.println(response);
     }
 
@@ -38,6 +43,13 @@ public class ActTwitterActivity extends Activity
     		public void onClick(View v) {
     			initializeTweetAsyncTask();
     			tweetAsyncTask.execute(mEditTextTweet.getText().toString());
+    		}
+    	});
+    	mButtonLoadHome.setOnClickListener(new View.OnClickListener() {
+    		@Override
+    		public void onClick(View v) {
+    			initializeHomeAsyncTask();
+    			homeAsyncTask.execute();
     		}
     	});
     }
@@ -83,6 +95,14 @@ public class ActTwitterActivity extends Activity
 			protected void onPostExecute(String response) {
 				if(response != null) {
 					System.out.println(response);
+					try {
+						ArrayList<Post> postList = Post.getPostsFromJSON(response);
+						mPostAdapter.setPostList(postList);
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+						Toast.makeText(getApplicationContext(), "Error parsing timeline", Toast.LENGTH_SHORT).show();
+					}
 				}
                 else {
                     Toast.makeText(getApplicationContext(), "Cannot get home timeline", Toast.LENGTH_SHORT).show();
